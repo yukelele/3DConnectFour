@@ -12,32 +12,59 @@ char *mainBoard[5];
 
 void board();
 void display();
-char mark(char player);
+int charToNum(char row);
 
 int main()
 {
-  board();
-  display();
+  board(); 
 
   char player1 = 'X'; 
   char player2 = 'O'; 
   char playerTurns;
+  char row;
+  int num;
+
+  int turn = 1;
   
-  int turn = 1; 
+  do{
+  display();
+
+  
+
 
   if(turn%2)
     playerTurns = player1; 
   else
     playerTurns = player2; 
 
-  mark(playerTurns);
+  cout << "Row: ";
+  cin >> row;
+  cout << "Num: ";
+  cin >> num; 
+
+  mainBoard[charToNum(row)][num] = playerTurns;
+  
+  turn++;
+  }while(true);
 
 
   return 0;
 }
 
-char mark(char player){
-
+int charToNum(char row){
+  if (row == 'D' || row == 'd')
+    return 4;
+  else if (row == 'C' || row == 'c')
+    return 3;
+  else if (row == 'B' || row == 'b')
+    return 2;
+  else if (row == 'A' || row == 'a')
+    return 1;
+  else{
+    cout << "Invalid move\n Please try again";
+    ////////////// fixing: retry player's turn
+    return -1;
+  }
 }
 
 void display(){
