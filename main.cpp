@@ -1,5 +1,6 @@
 #include <iostream> 
 #include <cmath> 
+#include <string>
 using namespace std;
 
 char rowD[] = {'-', '1', '2', '3', '4', '-'};
@@ -13,43 +14,112 @@ char *mainBoard[5];
 void board();
 void display();
 int charToNum(char row);
+bool checkmate(char player, int row, int num);
+bool checkPoints(int points);
 
 int main()
 {
   board(); 
+  display();
 
   char player1 = 'X'; 
   char player2 = 'O'; 
   char playerTurns;
   char row;
   int num;
+  bool game = false;
 
-  int turn = 1;
+  ////////// include random turns
+  int turn = 0;
+
   
   do{
-  display();
+    turn++;
+ 
 
+    if(turn%2)
+      playerTurns = player1; 
+    else
+      playerTurns = player2; 
+
+    cout << "Row + Number: ";
+    cin >> row;
+    cin >> num; 
+
+    int letter = charToNum(row);
+    mainBoard[letter][num] = playerTurns;
   
+    game = checkmate(playerTurns, letter, num);
+    display();
 
+    ///////KNOW WHEN THE GAME IS A DRAW
 
-  if(turn%2)
-    playerTurns = player1; 
-  else
-    playerTurns = player2; 
-
-  cout << "Row: ";
-  cin >> row;
-  cout << "Num: ";
-  cin >> num; 
-
-  mainBoard[charToNum(row)][num] = playerTurns;
-  
-  turn++;
-  }while(true);
+  }while(!game);
 
 
   return 0;
 }
+
+bool checkmate(char player, int row, int num){
+
+
+  //need four points to win
+  int points = 0;
+
+  for(int i=1; i<=4; i++){
+    if(mainBoard[row][i] == player)
+      points++;
+    else{ //if(mainBoard[row][i] != player)
+      points = 0;
+      break;
+    }      
+  }
+  if(checkPoints(points))
+    return true;
+
+  for(int i=1; i<=4; i++){
+    if(mainBoard[i][num] == player)
+      points++;
+    else{ 
+      points = 0;
+      break;
+    }
+  }
+  if(checkPoints(points))
+    return true;
+
+  for(int i=1; i<=4; i++){
+    if(mainBoard[i][i] == player)
+      points++;
+    else{
+      points = 0;
+      break; 
+    }
+  }
+  if(checkPoints(points))
+    return true;
+
+  for(int i=1; i<=4; i++){
+    if(mainBoard[5-i][i] == player)
+      points++;
+    else{
+      points = 0; 
+      break;
+    }
+  }
+  return checkPoints(points);
+
+   
+
+}
+
+bool checkPoints(int points){
+  if (points == 4)
+    return true;
+  return false; 
+}
+
+
 
 int charToNum(char row){
   if (row == 'D' || row == 'd')
