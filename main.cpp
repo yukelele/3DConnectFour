@@ -29,24 +29,47 @@ int main()
   int num;
   bool game = false;
 
-  ////////// include random turns
-  int turn = 0;
 
+  int turn = rand()%2;
   
   do{
     turn++;
- 
+    turn = turn%2;
 
-    if(turn%2)
+    if(turn)
       playerTurns = player1; 
     else
       playerTurns = player2; 
 
+    cout << "PLAYER " << turn+1 << " TURNS" << endl;
     cout << "Row + Number: ";
-    cin >> row;
-    cin >> num; 
 
-    int letter = charToNum(row);
+
+    int hat;
+    while(true){
+      cin >> hat; 
+      cout << "i like the number :    " << hat << endl;
+    }
+
+
+      int letter = 0;
+    while(true){
+     
+      cin >> row;
+     
+    
+     cin >> num; 
+
+    
+      letter = charToNum(row);
+      
+      cout << "helllo    "  << letter << endl;
+    }
+
+
+
+
+
     mainBoard[letter][num] = playerTurns;
   
     game = checkmate(playerTurns, letter, num);
@@ -56,20 +79,20 @@ int main()
 
   }while(!game);
 
+  cout << "THE GAME IS OVER" << endl;
+  cout << "PLAYER " << (turn+1) << " WINS!" << endl;
 
   return 0;
 }
 
 bool checkmate(char player, int row, int num){
-
-
   //need four points to win
   int points = 0;
 
   for(int i=1; i<=4; i++){
     if(mainBoard[row][i] == player)
       points++;
-    else{ //if(mainBoard[row][i] != player)
+    else{ 
       points = 0;
       break;
     }      
@@ -108,9 +131,6 @@ bool checkmate(char player, int row, int num){
     }
   }
   return checkPoints(points);
-
-   
-
 }
 
 bool checkPoints(int points){
@@ -118,8 +138,6 @@ bool checkPoints(int points){
     return true;
   return false; 
 }
-
-
 
 int charToNum(char row){
   if (row == 'D' || row == 'd')
@@ -131,9 +149,10 @@ int charToNum(char row){
   else if (row == 'A' || row == 'a')
     return 1;
   else{
-    cout << "Invalid move\n Please try again";
+    cout << "Invalid move. Please try again" << endl;
     ////////////// fixing: retry player's turn
-    return -1;
+   
+    return 0;
   }
 }
 
