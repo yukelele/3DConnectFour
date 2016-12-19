@@ -45,15 +45,11 @@ int main()
     cout << "Row + Number: ";
 
 
-    int hat;
-    while(true){
-      cin >> hat; 
-      cout << "i like the number :    " << hat << endl;
-    }
+  
 
 
       int letter = 0;
-    while(true){
+    while(letter == 0){
      
       cin >> row;
      
