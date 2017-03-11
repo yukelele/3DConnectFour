@@ -10,12 +10,12 @@ char rowA[] = {'-', '1', '2', '3', '4', '-'};
 
 char *mainBoard[5]; 
 
-
 void board();
 void display();
 int charToNum(char row);
 bool checkmate(char player, int row, int num);
 bool checkPoints(int points);
+bool tieGame(int iter);
 
 int main()
 {
@@ -31,11 +31,8 @@ int main()
 
 
   int turn = rand()%2;
-  
-  do{
-    turn++;
-    turn = turn%2;
-    
+  int iter = 0;
+  do{     
     if(turn)
       playerTurns = player1; 
     else
@@ -46,31 +43,43 @@ int main()
     
     int letter = 0;
     bool move = true;
-    //    while(letter == 0 || mainBoard[letter][num] == num){
     while(move){
       cin >> row;    
       cin >> num; 
       letter = charToNum(row);
-      if(mainBoard[letter][num] == num){
-	mainBoard[letter][num] = playerTurns;
-	move = false; 
+      char n = (char)num%48 + 48;
+
+      if(mainBoard[letter][num] == n){
+	      mainBoard[letter][num] = playerTurns;
+	      move = false; 
       }else
-	cout << "The selected spot has been taken. Please pick a different spot " << endl;
+	      cout << "The selected spot has been taken. Please pick a different spot " << endl;
      }
-    
-     //mainBoard[letter][num] = playerTurns;
 
     game = checkmate(playerTurns, letter, num);
     display();
 
-    ///////KNOW WHEN THE GAME IS A DRAW
+    turn = (turn+1)%2;
+    iter++;
+    
+  }while(!game && !tieGame(iter));
 
-  }while(!game);
-
-  cout << "THE GAME IS OVER" << endl;
-  cout << "PLAYER " << (turn+1) << " WINS!" << endl;
-
+  if(tieGame(iter))
+    cout << "TIE GAME!" << endl;
+  else{
+    cout << "THE GAME IS OVER" << endl;
+    cout << "PLAYER " << (turn+1) << " WINS!" << endl;
+  }
+    
   return 0;
+}
+
+bool tieGame(int iter){
+  //there are only 16 positions
+  if(iter == 16)
+    return true;
+  else 
+    return false;
 }
 
 bool checkmate(char player, int row, int num){
@@ -122,12 +131,14 @@ bool checkmate(char player, int row, int num){
 }
 
 bool checkPoints(int points){
+  //a row of 4 same pieces results a win
   if (points == 4)
     return true;
   return false; 
 }
 
 int charToNum(char row){
+  //convert row into a number
   if (row == 'D' || row == 'd')
     return 4;
   else if (row == 'C' || row == 'c')
@@ -138,13 +149,12 @@ int charToNum(char row){
     return 1;
   else{
     cout << "Invalid move. Please try again" << endl;
-    ////////////// fixing: retry player's turn
-   
     return 0;
   }
 }
 
 void display(){
+  //draw the board display
   cout << endl;
   cout << endl;
 
@@ -164,6 +174,7 @@ void display(){
 }
 
 void board(){
+  //set the main board
   mainBoard[0] = NULL;
   mainBoard[1] = rowA; 
   mainBoard[2] = rowB; 

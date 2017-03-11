@@ -10,12 +10,12 @@ char rowA[] = {'-', '1', '2', '3', '4', '-'};
 
 char *mainBoard[5]; 
 
-
 void board();
 void display();
 int charToNum(char row);
 bool checkmate(char player, int row, int num);
 bool checkPoints(int points);
+bool tieGame(int iter);
 
 int main()
 {
@@ -31,54 +31,58 @@ int main()
 
 
   int turn = rand()%2;
-  
-  do{
-    turn++;
-    turn = turn%2;
-
+  int iter = 0;
+  do{     
     if(turn)
       playerTurns = player1; 
     else
       playerTurns = player2; 
-
+    
     cout << "PLAYER " << turn+1 << " TURNS" << endl;
     cout << "Row + Number: ";
-
-
-  
-
-
-      int letter = 0;
-    while(letter == 0){
-     
-      cin >> row;
-     
     
-     cin >> num; 
-
-    
+    int letter = 0;
+    bool move = true;
+    //    while(letter == 0 || mainBoard[letter][num] == num){
+    while(move){
+      cin >> row;    
+      cin >> num; 
       letter = charToNum(row);
-      
-      cout << "helllo    "  << letter << endl;
-    }
+      char n = (char)num%48 + 48;
 
+      if(mainBoard[letter][num] == n){
+	      mainBoard[letter][num] = playerTurns;
+	      move = false; 
+      }else
+	      cout << "The selected spot has been taken. Please pick a different spot " << endl;
+     }
+    
+     //mainBoard[letter][num] = playerTurns;
 
-
-
-
-    mainBoard[letter][num] = playerTurns;
-  
     game = checkmate(playerTurns, letter, num);
     display();
 
+    turn = (turn+1)%2;
+    iter++;
     ///////KNOW WHEN THE GAME IS A DRAW
 
-  }while(!game);
+  }while(!game && !tieGame(iter));
 
-  cout << "THE GAME IS OVER" << endl;
-  cout << "PLAYER " << (turn+1) << " WINS!" << endl;
-
+  if(tieGame(iter))
+    cout << "TIE GAME!" << endl;
+  else{
+    cout << "THE GAME IS OVER" << endl;
+    cout << "PLAYER " << (turn+1) << " WINS!" << endl;
+  }
+    
   return 0;
+}
+
+bool tieGame(int iter){
+  if(iter == 16)
+    return true;
+  else 
+    return false;
 }
 
 bool checkmate(char player, int row, int num){
