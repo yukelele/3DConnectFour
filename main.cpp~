@@ -35,31 +35,39 @@ int main()
   do{
     turn++;
     turn = turn%2;
-    
+
     if(turn)
       playerTurns = player1; 
     else
       playerTurns = player2; 
-    
+
     cout << "PLAYER " << turn+1 << " TURNS" << endl;
     cout << "Row + Number: ";
-    
-    int letter = 0;
-    bool move = true;
-    //    while(letter == 0 || mainBoard[letter][num] == num){
-    while(move){
-      cin >> row;    
-      cin >> num; 
-      letter = charToNum(row);
-      if(mainBoard[letter][num] == num){
-	mainBoard[letter][num] = playerTurns;
-	move = false; 
-      }else
-	cout << "The selected spot has been taken. Please pick a different spot " << endl;
-     }
-    
-     //mainBoard[letter][num] = playerTurns;
 
+
+  
+
+
+      int letter = 0;
+    while(letter == 0){
+     
+      cin >> row;
+     
+    
+     cin >> num; 
+
+    
+      letter = charToNum(row);
+      
+      cout << "helllo    "  << letter << endl;
+    }
+
+
+
+
+
+    mainBoard[letter][num] = playerTurns;
+  
     game = checkmate(playerTurns, letter, num);
     display();
 
